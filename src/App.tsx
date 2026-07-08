@@ -98,7 +98,7 @@ export default function App() {
 
         <LiveScannerAccordion manifestRows={manifestRows} onExportConteo={handleExportConteo} />
 
-        <DashboardAccordion manifestRows={manifestRows} conteos={conteos} />
+        <DashboardAccordion manifestRows={manifestRows} conteos={conteos} open={hasConteo} />
 
         {hasManifest && hasConteo && (
           <button

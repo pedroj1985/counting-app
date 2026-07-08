@@ -36,6 +36,11 @@ export default function ConteoAccordion({ onData, initialConteos }: ConteoAccord
   const addSlot = () => {
     if (conteos.length >= MAX_CONTEOS) return
     emit([...conteos, { raw: [], normalized: [] }])
+    setTimeout(() => {
+      const inputs = document.querySelectorAll<HTMLInputElement>('input[type="file"]')
+      const last = inputs[inputs.length - 1]
+      if (last) last.click()
+    }, 0)
   }
 
   const removeSlot = (idx: number) => {
@@ -56,13 +61,14 @@ export default function ConteoAccordion({ onData, initialConteos }: ConteoAccord
       </summary>
       <div className="px-4 pb-4 space-y-3">
         {conteos.length === 0 && (
-          <div>
+          <div className="space-y-1">
             <FileUploader
               label="Conteo 1 (.xls/.xlsx)"
               accept=".xls,.xlsx"
               onFile={(f) => handleFile(f, 0)}
               loading={loading === 0}
             />
+            <p className="text-xs text-gray-400">Ej: 5855 cont-1.xlsx</p>
           </div>
         )}
 
@@ -81,12 +87,15 @@ export default function ConteoAccordion({ onData, initialConteos }: ConteoAccord
                 </button>
               )}
             </div>
-            <FileUploader
-              label={`Conteo ${idx + 1} (.xls/.xlsx)`}
-              accept=".xls,.xlsx"
-              onFile={(f) => handleFile(f, idx)}
-              loading={loading === idx}
-            />
+            <div className="space-y-1">
+              <FileUploader
+                label={`Conteo ${idx + 1} (.xls/.xlsx)`}
+                accept=".xls,.xlsx"
+                onFile={(f) => handleFile(f, idx)}
+                loading={loading === idx}
+              />
+              <p className="text-xs text-gray-400">Ej: 8559 cont-{idx + 1}.xlsx</p>
+            </div>
             {c.raw.length > 0 && (
               <p className="text-xs text-gray-500">{c.raw.length} entradas</p>
             )}

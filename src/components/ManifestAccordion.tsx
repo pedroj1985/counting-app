@@ -53,6 +53,7 @@ export default function ManifestAccordion({ onData, initialMeta, initialHeaders,
           onFile={handleFile}
           loading={loading}
         />
+        <p className="text-xs text-gray-400">Ej: Manifiesto CMCU 4958559.xls</p>
 
         {meta && (
           <div className="grid grid-cols-4 gap-2">
