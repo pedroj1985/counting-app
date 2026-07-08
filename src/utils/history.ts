@@ -6,7 +6,11 @@ const MAX_ENTRIES = 10
 export function getHistory(): HistoryEntry[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
+    const entries: HistoryEntry[] = raw ? JSON.parse(raw) : []
+    return entries.map((e) => ({
+      ...e,
+      conteosEntries: e.conteosEntries || (e as any).conteo1Entries ? [(e as any).conteo1Entries || [], (e as any).conteo2Entries || []] : [],
+    }))
   } catch {
     return []
   }

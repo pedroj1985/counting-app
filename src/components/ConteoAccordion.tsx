@@ -3,42 +3,48 @@ import type { ConteoData } from '../types'
 import { parseConteo } from '../utils/parser'
 import FileUploader from './FileUploader'
 
+const MAX_CONTEOS = 5
+
 interface ConteoAccordionProps {
-  onData: (conteo1: ConteoData | null, conteo2: ConteoData | null) => void
-  initialConteo1?: ConteoData | null
-  initialConteo2?: ConteoData | null
+  onData: (conteos: ConteoData[]) => void
+  initialConteos?: ConteoData[]
 }
 
-export default function ConteoAccordion({ onData, initialConteo1, initialConteo2 }: ConteoAccordionProps) {
-  const [c1, setC1] = useState<ConteoData | null>(initialConteo1 || null)
-  const [c2, setC2] = useState<ConteoData | null>(initialConteo2 || null)
-  const [loading1, setLoading1] = useState(false)
-  const [loading2, setLoading2] = useState(false)
+export default function ConteoAccordion({ onData, initialConteos }: ConteoAccordionProps) {
+  const [conteos, setConteos] = useState<ConteoData[]>(initialConteos || [])
+  const [loading, setLoading] = useState<number | null>(null)
 
-  const handleFile1 = async (file: File) => {
-    setLoading1(true)
-    try {
-      const data = await parseConteo(file)
-      setC1(data)
-      onData(data, c2)
-    } catch { alert('Error al leer Conteo 1') }
-    finally { setLoading1(false) }
+  const emit = (updated: ConteoData[]) => {
+    setConteos(updated)
+    onData(updated)
   }
 
-  const handleFile2 = async (file: File) => {
-    setLoading2(true)
+  const handleFile = async (file: File, idx: number) => {
+    setLoading(idx)
     try {
       const data = await parseConteo(file)
-      setC2(data)
-      onData(c1, data)
-    } catch { alert('Error al leer Conteo 2') }
-    finally { setLoading2(false) }
+      const updated = [...conteos]
+      updated[idx] = data
+      emit(updated)
+    } catch {
+      alert(`Error al leer Conteo ${idx + 1}`)
+    } finally {
+      setLoading(null)
+    }
   }
 
-  const totalUnion = new Set([
-    ...(c1?.normalized || []),
-    ...(c2?.normalized || []),
-  ])
+  const addSlot = () => {
+    if (conteos.length >= MAX_CONTEOS) return
+    emit([...conteos, { raw: [], normalized: [] }])
+  }
+
+  const removeSlot = (idx: number) => {
+    if (conteos.length <= 1) return
+    const updated = conteos.filter((_, i) => i !== idx)
+    emit(updated)
+  }
+
+  const totalUnion = new Set(conteos.flatMap((c) => c.normalized))
 
   return (
     <details className="group border border-gray-200 rounded-xl overflow-hidden bg-white">
@@ -49,19 +55,57 @@ export default function ConteoAccordion({ onData, initialConteo1, initialConteo2
         </svg>
       </summary>
       <div className="px-4 pb-4 space-y-3">
-        <div className="grid grid-cols-2 gap-3">
+        {conteos.length === 0 && (
           <div>
-            <p className="text-xs font-medium text-gray-500 mb-1">Conteo 1</p>
-            <FileUploader label="Conteo 1 (.xls/.xlsx)" accept=".xls,.xlsx" onFile={handleFile1} loading={loading1} />
-            {c1 && <p className="text-xs text-gray-500 mt-1">{c1.raw.length} entradas</p>}
+            <FileUploader
+              label="Conteo 1 (.xls/.xlsx)"
+              accept=".xls,.xlsx"
+              onFile={(f) => handleFile(f, 0)}
+              loading={loading === 0}
+            />
           </div>
-          <div>
-            <p className="text-xs font-medium text-gray-500 mb-1">Conteo 2</p>
-            <FileUploader label="Conteo 2 (.xls/.xlsx)" accept=".xls,.xlsx" onFile={handleFile2} loading={loading2} />
-            {c2 && <p className="text-xs text-gray-500 mt-1">{c2.raw.length} entradas</p>}
+        )}
+
+        {conteos.map((c, idx) => (
+          <div key={idx} className="border border-gray-100 rounded-xl p-3 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Conteo {idx + 1}</span>
+              {conteos.length > 1 && (
+                <button
+                  onClick={() => removeSlot(idx)}
+                  className="p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+            <FileUploader
+              label={`Conteo ${idx + 1} (.xls/.xlsx)`}
+              accept=".xls,.xlsx"
+              onFile={(f) => handleFile(f, idx)}
+              loading={loading === idx}
+            />
+            {c.raw.length > 0 && (
+              <p className="text-xs text-gray-500">{c.raw.length} entradas</p>
+            )}
           </div>
-        </div>
-        {(c1 || c2) && (
+        ))}
+
+        {conteos.length < MAX_CONTEOS && conteos.length > 0 && (
+          <button
+            onClick={addSlot}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-gray-300 rounded-xl text-sm text-gray-500 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Agregar otro conteo
+          </button>
+        )}
+
+        {totalUnion.size > 0 && (
           <div className="bg-blue-50 text-blue-800 text-sm rounded-lg px-3 py-2">
             🧮 <strong>Total combinado</strong> (únicos): {totalUnion.size} BLs
           </div>

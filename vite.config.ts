@@ -15,8 +15,8 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
       },
       manifest: {
-        name: 'Counting Tool',
-        short_name: 'Counting',
+        name: 'Herramienta de Conteo',
+        short_name: 'Conteo',
         description: 'Comparación de Manifiesto vs Conteo de Bultos',
         theme_color: '#2563eb',
         background_color: '#ffffff',

@@ -8,7 +8,7 @@ export default function Header({ onToggleHistory, historyCount }: HeaderProps) {
     <header className="border-b border-gray-200 bg-white sticky top-0 z-10">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">📦 counting-app</h1>
+          <h1 className="text-xl font-bold text-gray-900">📦 Herramienta de Conteo</h1>
           <p className="text-xs text-gray-500">Comparación de Manifiesto vs Conteo de Bultos</p>
         </div>
         <button

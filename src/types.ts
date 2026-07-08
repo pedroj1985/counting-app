@@ -30,8 +30,7 @@ export interface HistoryEntry {
   meta: ManifestMeta
   manifestRows: ManifestRow[]
   manifestHeaders: string[]
-  conteo1Entries: string[]
-  conteo2Entries: string[]
+  conteosEntries: string[][]
   comparison: Comparison
 }
 

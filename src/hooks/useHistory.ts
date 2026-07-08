@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { HistoryEntry } from '../types'
-import { getHistory, saveToHistory, deleteFromHistory, clearHistory as clearStorage, exportHistory, importHistory } from '../utils/history'
+import { getHistory, saveToHistory, deleteFromHistory, clearHistory as clearStorage } from '../utils/history'
 
 export function useHistory() {
   const [entries, setEntries] = useState<HistoryEntry[]>(() => getHistory())
@@ -20,14 +20,5 @@ export function useHistory() {
     setEntries([])
   }, [])
 
-  const exportJSON = useCallback(() => {
-    exportHistory()
-  }, [])
-
-  const importJSON = useCallback(async (file: File) => {
-    const merged = await importHistory(file)
-    setEntries(merged)
-  }, [])
-
-  return { entries, add, remove, clear, exportJSON, importJSON }
+  return { entries, add, remove, clear }
 }

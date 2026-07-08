@@ -8,6 +8,7 @@ import HistorySidebar from './components/HistorySidebar'
 import ManifestAccordion from './components/ManifestAccordion'
 import ConteoAccordion from './components/ConteoAccordion'
 import DashboardAccordion from './components/DashboardAccordion'
+import LiveScannerAccordion from './components/LiveScannerAccordion'
 
 export default function App() {
   const [historyOpen, setHistoryOpen] = useState(false)
@@ -17,13 +18,12 @@ export default function App() {
   const [manifestRows, setManifestRows] = useState<ManifestRow[]>([])
   const [manifestBLs, setManifestBLs] = useState<Set<string>>(new Set())
 
-  const [conteo1, setConteo1] = useState<ConteoData | null>(null)
-  const [conteo2, setConteo2] = useState<ConteoData | null>(null)
+  const [conteos, setConteos] = useState<ConteoData[]>([])
 
-  const { entries, add, remove, clear, exportJSON, importJSON } = useHistory()
+  const { entries, add, remove, clear } = useHistory()
 
   const hasManifest = manifestRows.length > 0
-  const hasConteo = conteo1 !== null || conteo2 !== null
+  const hasConteo = conteos.some((c) => c.raw.length > 0)
 
   const handleManifest = useCallback((meta: ManifestMeta, headers: string[], rows: ManifestRow[], bls: Set<string>) => {
     setManifestMeta(meta)
@@ -32,18 +32,21 @@ export default function App() {
     setManifestBLs(bls)
   }, [])
 
-  const handleConteo = useCallback((c1: ConteoData | null, c2: ConteoData | null) => {
-    setConteo1(c1)
-    setConteo2(c2)
+  const handleConteo = useCallback((updated: ConteoData[]) => {
+    setConteos(updated)
+  }, [])
+
+  const handleExportConteo = useCallback((bls: string[]) => {
+    const raw = bls
+    const normalized = raw.map(normalizeBL).filter((b): b is string => b !== null)
+    const unique = [...new Set(normalized)]
+    setConteos((prev) => [...prev, { raw, normalized: unique }])
   }, [])
 
   const handleSaveToHistory = useCallback(() => {
     if (!hasManifest || !hasConteo) return
 
-    const allConteo = new Set([
-      ...(conteo1?.normalized || []),
-      ...(conteo2?.normalized || []),
-    ])
+    const allConteo = new Set(conteos.flatMap((c) => c.normalized))
     const comparison = compareBLs(manifestBLs, allConteo)
 
     const entry: HistoryEntry = {
@@ -56,20 +59,22 @@ export default function App() {
       meta: manifestMeta || {},
       manifestRows,
       manifestHeaders,
-      conteo1Entries: conteo1?.raw || [],
-      conteo2Entries: conteo2?.raw || [],
+      conteosEntries: conteos.map((c) => c.raw),
       comparison,
     }
     add(entry)
-  }, [hasManifest, hasConteo, manifestMeta, manifestRows, manifestHeaders, conteo1, conteo2, manifestBLs, add])
+  }, [hasManifest, hasConteo, manifestMeta, manifestRows, manifestHeaders, conteos, manifestBLs, add])
 
   const handleHistorySelect = useCallback((entry: HistoryEntry) => {
     setManifestMeta(entry.meta)
     setManifestHeaders(entry.manifestHeaders)
     setManifestRows(entry.manifestRows)
     setManifestBLs(new Set(entry.manifestRows.map((r) => normalizeBL(r['Número de BL'] || '')).filter((b): b is string => b !== null)))
-    setConteo1(entry.conteo1Entries.length > 0 ? { raw: entry.conteo1Entries, normalized: entry.comparison.contados.concat(entry.comparison.extranos).filter(b => entry.conteo1Entries.some(c => normalizeBL(c) === b)) } : null)
-    setConteo2(entry.conteo2Entries.length > 0 ? { raw: entry.conteo2Entries, normalized: [] } : null)
+    const restored = entry.conteosEntries.map((raw) => ({
+      raw,
+      normalized: raw.map(normalizeBL).filter((b): b is string => b !== null),
+    }))
+    setConteos(restored)
     setHistoryOpen(false)
   }, [])
 
@@ -83,8 +88,6 @@ export default function App() {
         onSelect={handleHistorySelect}
         onDelete={remove}
         onClear={clear}
-        onExport={exportJSON}
-        onImport={importJSON}
         onClose={() => setHistoryOpen(false)}
       />
 
@@ -93,7 +96,9 @@ export default function App() {
 
         <ConteoAccordion onData={handleConteo} />
 
-        <DashboardAccordion manifestRows={manifestRows} conteo1={conteo1} conteo2={conteo2} />
+        <LiveScannerAccordion manifestRows={manifestRows} onExportConteo={handleExportConteo} />
+
+        <DashboardAccordion manifestRows={manifestRows} conteos={conteos} />
 
         {hasManifest && hasConteo && (
           <button
@@ -106,7 +111,7 @@ export default function App() {
       </main>
 
       <footer className="text-center py-4 text-xs text-gray-400">
-        counting-app · Procesamiento de Manifiesto vs Conteo de Bultos
+        Herramienta de Conteo · Procesamiento de Manifiesto vs Conteo de Bultos
       </footer>
     </div>
   )

@@ -6,12 +6,10 @@ interface HistorySidebarProps {
   onSelect: (entry: HistoryEntry) => void
   onDelete: (id: string) => void
   onClear: () => void
-  onExport: () => void
-  onImport: (file: File) => void
   onClose: () => void
 }
 
-export default function HistorySidebar({ open, entries, onSelect, onDelete, onClear, onExport, onImport, onClose }: HistorySidebarProps) {
+export default function HistorySidebar({ open, entries, onSelect, onDelete, onClear, onClose }: HistorySidebarProps) {
   if (!open) return null
 
   return (
@@ -27,22 +25,13 @@ export default function HistorySidebar({ open, entries, onSelect, onDelete, onCl
           </button>
         </div>
 
-        <div className="p-4 space-y-2">
-          <div className="flex gap-2">
-            <button onClick={onExport} className="flex-1 px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-              Exportar JSON
-            </button>
-            <label className="flex-1 px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer text-center">
-              Importar JSON
-              <input type="file" accept=".json" onChange={(e) => e.target.files?.[0] && onImport(e.target.files[0])} className="hidden" />
-            </label>
-          </div>
-          {entries.length > 0 && (
+        {entries.length > 0 && (
+          <div className="p-4 pb-0">
             <button onClick={onClear} className="w-full px-3 py-2 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
               Borrar historial
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="px-4 pb-4 space-y-2">
           {entries.length === 0 && (
