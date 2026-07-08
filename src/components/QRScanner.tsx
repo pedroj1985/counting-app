@@ -1,11 +1,12 @@
 import { useEffect, useRef, useCallback } from 'react'
 
 interface QRScannerProps {
+  active: boolean
   onScan: (text: string) => void
   onError?: (err: string) => void
 }
 
-export default function QRScanner({ onScan, onError }: QRScannerProps) {
+export default function QRScanner({ active, onScan, onError }: QRScannerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const scannerRef = useRef<any>(null)
 
@@ -19,6 +20,11 @@ export default function QRScanner({ onScan, onError }: QRScannerProps) {
   }, [])
 
   useEffect(() => {
+    if (!active) {
+      stop()
+      return
+    }
+
     let cancelled = false
 
     const start = async () => {
@@ -56,14 +62,14 @@ export default function QRScanner({ onScan, onError }: QRScannerProps) {
       cancelled = true
       stop()
     }
-  }, [onScan, onError, stop])
+  }, [active, onScan, onError, stop])
 
   return (
     <div
       id="qr-scanner-v"
       ref={containerRef}
       className="w-full overflow-hidden rounded-xl bg-gray-100"
-      style={{ minHeight: 220 }}
+      style={{ minHeight: active ? 220 : 0 }}
     />
   )
 }
