@@ -16,6 +16,7 @@ export default function ManifestAccordion({ onData, initialMeta, initialHeaders,
   const [meta, setMeta] = useState<ManifestMeta | null>(initialMeta || null)
   const [headers, setHeaders] = useState<string[]>(initialHeaders || [])
   const [rows, setRows] = useState<ManifestRow[]>(initialRows || [])
+  const [showTable, setShowTable] = useState(false)
 
   const handleFile = async (file: File) => {
     setLoading(true)
@@ -70,7 +71,18 @@ export default function ManifestAccordion({ onData, initialMeta, initialHeaders,
         )}
 
         {rows.length > 0 && (
-          <BLTable rows={rows} headers={headers} />
+          <div>
+            <button
+              onClick={() => setShowTable(!showTable)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+            >
+              <svg className={`w-4 h-4 transition-transform ${showTable ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+              {showTable ? 'Ocultar filas del manifiesto' : `Ver detalle de filas (${rows.length} registros)`}
+            </button>
+            {showTable && <div className="mt-3"><BLTable rows={rows} headers={headers} /></div>}
+          </div>
         )}
       </div>
     </details>
