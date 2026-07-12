@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "com.pedroj1985.countingapp"
-    compileSdk = rootProject.ext.compileSdkVersion
+    namespace = "com.vitalsoftgroup.countingapp"
+
     defaultConfig {
-        applicationId "com.pedroj1985.countingapp"
+        applicationId "com.vitalsoftgroup.countingapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">Herramienta de Conteo</string>
     <string name="title_activity_main">Herramienta de Conteo</string>
-    <string name="package_name">com.pedroj1985.countingapp</string>
-    <string name="custom_url_scheme">com.pedroj1985.countingapp</string>
+    <string name="package_name">com.vitalsoftgroup.countingapp</string>
+    <string name="custom_url_scheme">com.vitalsoftgroup.countingapp</string>
 </resources>

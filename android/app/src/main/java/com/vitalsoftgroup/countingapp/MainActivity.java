@@ -1,4 +1,4 @@
-package com.pedroj1985.countingapp;
+package com.vitalsoftgroup.countingapp;
 
 import com.getcapacitor.BridgeActivity;
 
