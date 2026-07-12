@@ -29,7 +29,7 @@ export default function DashboardAccordion({ manifestRows, conteos, open }: Dash
   const isDisabled = manifestRows.length === 0 || conteosConDatos.length === 0
 
   return (
-    <details open={open} className={`group border border-gray-200 rounded-xl overflow-hidden bg-white ${isDisabled ? 'opacity-50' : ''}`}>
+    <details open={open} className={`group shadow-card rounded-xl overflow-hidden bg-white ${isDisabled ? 'opacity-50' : ''}`}>
       <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none hover:bg-gray-50 transition-colors">
         <span className="font-semibold text-gray-900 text-sm">3. Dashboard</span>
         <svg className="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

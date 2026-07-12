@@ -32,7 +32,7 @@ export default function FileUploader({ label, accept, onFile, loading }: FileUpl
       <label
         htmlFor={`file-${label}`}
         className={`flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl text-sm cursor-pointer transition-colors
-          ${loading ? 'opacity-50 pointer-events-none' : 'hover:border-blue-400 hover:bg-blue-50'}`}
+          ${loading ? 'opacity-50 pointer-events-none' : 'hover:border-brand-400 hover:bg-brand-50'}`}
       >
         {loading ? (
           <span className="animate-pulse text-gray-400">Procesando…</span>

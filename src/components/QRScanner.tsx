@@ -68,7 +68,7 @@ export default function QRScanner({ active, onScan, onError }: QRScannerProps) {
     <div
       id="qr-scanner-v"
       ref={containerRef}
-      className="w-full overflow-hidden rounded-xl bg-gray-100"
+      className="w-full overflow-hidden rounded-xl bg-smoke-100"
       style={{ minHeight: active ? 220 : 0 }}
     />
   )

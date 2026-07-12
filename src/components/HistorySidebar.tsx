@@ -15,8 +15,8 @@ export default function HistorySidebar({ open, entries, onSelect, onDelete, onCl
   return (
     <div className="fixed inset-0 z-20 flex">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative ml-auto w-80 max-w-[85vw] bg-white h-full shadow-xl overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+        <div className="relative ml-auto w-80 max-w-[85vw] bg-white h-full shadow-xl overflow-y-auto">
+        <div className="sticky top-0 bg-white shadow-card p-4 flex items-center justify-between">
           <h2 className="font-semibold text-gray-900">📋 Historial</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-lg">
             <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,7 +38,7 @@ export default function HistorySidebar({ open, entries, onSelect, onDelete, onCl
             <p className="text-sm text-gray-400 text-center py-8">Sin sesiones guardadas</p>
           )}
           {entries.map((entry) => (
-            <div key={entry.id} className="border border-gray-200 rounded-xl p-3 hover:border-blue-300 transition-colors cursor-pointer" onClick={() => onSelect(entry)}>
+            <div key={entry.id} className="border border-gray-200 rounded-xl p-3 hover:border-brand-300 shadow-sm transition-all cursor-pointer" onClick={() => onSelect(entry)}>
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-gray-900 truncate">{entry.manifestFile}</p>

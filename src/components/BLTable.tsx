@@ -29,12 +29,12 @@ export default function BLTable({ rows, headers }: BLTableProps) {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="🔍 Buscar por BL, destinatario o provincia…"
-        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
       />
       <div className="overflow-x-auto rounded-lg border border-gray-200">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 text-left">
+            <tr className="bg-smoke-100 text-left">
               {availableCols.map((c) => (
                 <th key={c} className="px-3 py-2 text-xs font-semibold text-gray-600 whitespace-nowrap">{c}</th>
               ))}

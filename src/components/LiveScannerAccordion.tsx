@@ -139,7 +139,7 @@ export default function LiveScannerAccordion({ manifestRows, onExportConteo }: L
   const isDisabled = manifestRows.length === 0
 
   return (
-    <details className={`group border border-gray-200 rounded-xl overflow-hidden bg-white ${isDisabled ? 'opacity-50' : ''}`}>
+    <details className={`group shadow-card rounded-xl overflow-hidden bg-white ${isDisabled ? 'opacity-50' : ''}`}>
       <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none hover:bg-gray-50 transition-colors">
         <span className="font-semibold text-gray-900 text-sm">3. Escaneo QR</span>
         <svg className="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,7 +157,7 @@ export default function LiveScannerAccordion({ manifestRows, onExportConteo }: L
                 className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-colors ${
                   cameraActive
                     ? 'bg-red-50 text-red-700 border border-red-200 hover:bg-red-100'
-                    : 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800'
+                    : 'bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800'
                 }`}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,7 +229,7 @@ export default function LiveScannerAccordion({ manifestRows, onExportConteo }: L
               <div>
                 <button
                   onClick={() => setDetailOpen(!detailOpen)}
-                  className="w-full flex items-center justify-between px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                  className="w-full flex items-center justify-between px-3 py-2 bg-smoke-100 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                 >
                   <span>📋 BLs escaneados ({scannedList.length})</span>
                   <svg className={`w-4 h-4 transition-transform ${detailOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -52,7 +52,7 @@ export default function ConteoAccordion({ onData, initialConteos }: ConteoAccord
   const totalUnion = new Set(conteos.flatMap((c) => c.normalized))
 
   return (
-    <details className="group border border-gray-200 rounded-xl overflow-hidden bg-white">
+    <details className="group shadow-card rounded-xl overflow-hidden bg-white">
       <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none hover:bg-gray-50 transition-colors">
         <span className="font-semibold text-gray-900 text-sm">2. Conteos</span>
         <svg className="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +105,7 @@ export default function ConteoAccordion({ onData, initialConteos }: ConteoAccord
         {conteos.length < MAX_CONTEOS && conteos.length > 0 && (
           <button
             onClick={addSlot}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-gray-300 rounded-xl text-sm text-gray-500 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-dashed border-gray-300 rounded-xl text-sm text-gray-500 hover:border-brand-400 hover:text-brand-600 hover:bg-brand-50 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -115,7 +115,7 @@ export default function ConteoAccordion({ onData, initialConteos }: ConteoAccord
         )}
 
         {totalUnion.size > 0 && (
-          <div className="bg-blue-50 text-blue-800 text-sm rounded-lg px-3 py-2">
+          <div className="bg-brand-50 text-brand-800 text-sm rounded-lg px-3 py-2">
             🧮 <strong>Total combinado</strong> (únicos): {totalUnion.size} BLs
           </div>
         )}

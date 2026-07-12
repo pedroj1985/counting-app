@@ -79,7 +79,7 @@ export default function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-smoke-100">
       <Header onToggleHistory={() => setHistoryOpen(!historyOpen)} historyCount={entries.length} />
 
       <HistorySidebar
@@ -103,7 +103,7 @@ export default function App() {
         {hasManifest && hasConteo && (
           <button
             onClick={handleSaveToHistory}
-            className="w-full py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-colors text-sm"
+            className="w-full py-3 bg-brand-600 text-white font-medium rounded-xl shadow-sm hover:bg-brand-700 active:bg-brand-800 transition-all text-sm"
           >
             💾 Guardar sesión en historial
           </button>

@@ -39,7 +39,7 @@ export default function ManifestAccordion({ onData, initialMeta, initialHeaders,
   }
 
   return (
-    <details className="group border border-gray-200 rounded-xl overflow-hidden bg-white" open>
+    <details className="group shadow-card rounded-xl overflow-hidden bg-white" open>
       <summary className="flex items-center justify-between px-4 py-3 cursor-pointer list-none hover:bg-gray-50 transition-colors">
         <span className="font-semibold text-gray-900 text-sm">1. Manifiesto</span>
         <svg className="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
