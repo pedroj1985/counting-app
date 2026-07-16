@@ -8,6 +8,14 @@ const PREFIX_MAP: Record<string, string> = {
   'CPKA': 'CPKA',
 }
 
+const DIGIT_LENGTH: Record<string, number> = {
+  'CPK': 7,
+  'MAYA': 7,
+  'CMCU': 11,
+  'SEGU': 7,
+  'CPKA': 7,
+}
+
 export function normalizeBL(raw: string): string | null {
   const s = raw.trim()
   if (!s) return null
@@ -23,5 +31,7 @@ export function normalizeBL(raw: string): string | null {
     ? (PREFIX_MAP[prefixMatch[1]] || prefixMatch[1])
     : 'CPK'
 
-  return `${prefix}-${joinedNumbers}`
+  const expectedLen = DIGIT_LENGTH[prefix] || joinedNumbers.length
+  const padded = joinedNumbers.padStart(expectedLen, '0')
+  return `${prefix}-${padded}`
 }

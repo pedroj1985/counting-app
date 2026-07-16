@@ -97,7 +97,10 @@ export default function ConteoAccordion({ onData, initialConteos }: ConteoAccord
               <p className="text-xs text-gray-400">Ej: 8559 cont-{idx + 1}.xlsx</p>
             </div>
             {c.raw.length > 0 && (
-              <p className="text-xs text-gray-500">{c.raw.length} entradas</p>
+              <p className="text-xs text-gray-500">
+                {c.fileName && <span className="text-gray-600 font-medium">{c.fileName}</span>}
+                {' '}{c.raw.length} entradas
+              </p>
             )}
           </div>
         ))}

@@ -103,7 +103,7 @@ export default function App() {
       </main>
 
       <footer className="text-center py-4 text-xs text-gray-400">
-        Herramienta de Conteo · Procesamiento de Manifiesto vs Conteo de Bultos
+        Herramienta de Conteo v{__APP_VERSION__} · Procesamiento de Manifiesto vs Conteo de Bultos
       </footer>
     </div>
   )

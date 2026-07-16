@@ -4,6 +4,7 @@ import { normalizeBL } from '../utils/normalizer'
 import { compareBLs } from '../utils/comparator'
 import KPICards from './KPICards'
 import Warnings from './Warnings'
+import ConteoTable from './ConteoTable'
 
 interface DashboardAccordionProps {
   manifestRows: ManifestRow[]
@@ -14,16 +15,16 @@ interface DashboardAccordionProps {
 export default function DashboardAccordion({ manifestRows, conteos, open }: DashboardAccordionProps) {
   const conteosConDatos = conteos.filter((c) => c.raw.length > 0)
 
-  const comparison: Comparison | null = useMemo(() => {
-    if (manifestRows.length === 0) return null
-    const manifestBLs = new Set(
+  const { comparison, manifestBLs } = useMemo(() => {
+    if (manifestRows.length === 0) return { comparison: null, manifestBLs: new Set<string>() }
+    const mBLs = new Set(
       manifestRows
         .map((r) => normalizeBL(r['Número de BL'] || ''))
         .filter((b): b is string => b !== null)
     )
     const conteoBLs = new Set(conteosConDatos.flatMap((c) => c.normalized))
-    if (conteoBLs.size === 0) return null
-    return compareBLs(manifestBLs, conteoBLs)
+    if (conteoBLs.size === 0) return { comparison: null, manifestBLs: mBLs }
+    return { comparison: compareBLs(mBLs, conteoBLs), manifestBLs: mBLs }
   }, [manifestRows, conteosConDatos])
 
   const isDisabled = manifestRows.length === 0 || conteosConDatos.length === 0
@@ -85,6 +86,16 @@ export default function DashboardAccordion({ manifestRows, conteos, open }: Dash
                     })}
                   </tbody>
                 </table>
+              </div>
+            </details>
+
+            <details open className="group">
+              <summary className="text-sm font-medium text-gray-700 cursor-pointer list-none flex items-center gap-1">
+                <span className="group-open:rotate-90 transition-transform">▶</span>
+                📦 Listado de Conteo ({new Set(conteosConDatos.flatMap((c) => c.normalized)).size} BLs)
+              </summary>
+              <div className="mt-2">
+                <ConteoTable conteos={conteosConDatos} manifestBLs={manifestBLs} />
               </div>
             </details>
 

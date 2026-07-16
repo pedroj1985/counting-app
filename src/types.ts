@@ -37,4 +37,5 @@ export interface HistoryEntry {
 export interface ConteoData {
   raw: string[]
   normalized: string[]
+  fileName?: string
 }

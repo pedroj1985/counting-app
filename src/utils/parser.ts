@@ -105,7 +105,7 @@ export function parseConteo(file: File): Promise<ConteoData> {
         }
 
         const normalized = raw.map(normalizeBL).filter((n): n is string => n !== null)
-        resolve({ raw, normalized })
+        resolve({ raw, normalized, fileName: file.name })
       } catch (err) {
         reject(err)
       }
