@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import type { ManifestMeta, ManifestRow, ConteoData, HistoryEntry } from './types'
 import { normalizeBL } from './utils/normalizer'
+
 import { compareBLs } from './utils/comparator'
 import { useHistory } from './hooks/useHistory'
 import Header from './components/Header'
@@ -8,7 +9,7 @@ import HistorySidebar from './components/HistorySidebar'
 import ManifestAccordion from './components/ManifestAccordion'
 import ConteoAccordion from './components/ConteoAccordion'
 import DashboardAccordion from './components/DashboardAccordion'
-import LiveScannerAccordion from './components/LiveScannerAccordion'
+
 
 export default function App() {
   const [historyOpen, setHistoryOpen] = useState(false)
@@ -34,13 +35,6 @@ export default function App() {
 
   const handleConteo = useCallback((updated: ConteoData[]) => {
     setConteos(updated)
-  }, [])
-
-  const handleExportConteo = useCallback((bls: string[]) => {
-    const raw = bls
-    const normalized = raw.map(normalizeBL).filter((b): b is string => b !== null)
-    const unique = [...new Set(normalized)]
-    setConteos((prev) => [...prev, { raw, normalized: unique }])
   }, [])
 
   const handleSaveToHistory = useCallback(() => {
@@ -95,8 +89,6 @@ export default function App() {
         <ManifestAccordion onData={handleManifest} />
 
         <ConteoAccordion onData={handleConteo} />
-
-        <LiveScannerAccordion manifestRows={manifestRows} onExportConteo={handleExportConteo} />
 
         <DashboardAccordion manifestRows={manifestRows} conteos={conteos} open={hasConteo} />
 

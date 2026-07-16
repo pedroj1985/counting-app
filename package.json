@@ -17,7 +17,6 @@
     "@capacitor/cli": "^8.4.1",
     "@capacitor/core": "^8.4.1",
     "autoprefixer": "^10.5.2",
-    "html5-qrcode": "^2.3.8",
     "postcss": "^8.5.16",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
