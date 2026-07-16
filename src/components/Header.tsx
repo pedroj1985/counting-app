@@ -13,7 +13,7 @@ export default function Header({ onToggleHistory, historyCount }: HeaderProps) {
               <path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344" />
               <path d="m9 11 3 3L22 4" />
             </svg>
-            Herramienta de Conteo
+            Herramienta de Conteo<span className="text-xs text-gray-400 font-normal ml-1">v1.3</span>
           </h1>
           <p className="text-xs text-gray-500">Comparación de Manifiesto vs Conteo de Bultos</p>
         </div>
