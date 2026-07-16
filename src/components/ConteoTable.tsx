@@ -18,6 +18,8 @@ type FilterType = 'all' | 'contados' | 'extranos'
 export default function ConteoTable({ conteos, manifestBLs }: ConteoTableProps) {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState<FilterType>('all')
+  const [sortKey, setSortKey] = useState('')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc' | null>(null)
 
   const rows = useMemo<ConteoRow[]>(() => {
     const blMap = new Map<string, ConteoRow>()
@@ -50,13 +52,39 @@ export default function ConteoTable({ conteos, manifestBLs }: ConteoTableProps) 
       const q = search.toLowerCase()
       result = result.filter((r) => r.bl.toLowerCase().includes(q) || r.origen.toLowerCase().includes(q) || r.fileName.toLowerCase().includes(q))
     }
+    if (sortKey && sortDir) {
+      result = [...result].sort((a, b) => {
+        const av = a[sortKey as keyof ConteoRow] || ''
+        const bv = b[sortKey as keyof ConteoRow] || ''
+        const cmp = av.localeCompare(bv, 'es', { numeric: true, sensitivity: 'base' })
+        return sortDir === 'asc' ? cmp : -cmp
+      })
+    }
     return result
-  }, [rows, search, filter])
+  }, [rows, search, filter, sortKey, sortDir])
+
+  const handleSort = (col: string) => {
+    if (sortKey === col) {
+      if (sortDir === 'asc') setSortDir('desc')
+      else if (sortDir === 'desc') { setSortDir(null); setSortKey('') }
+      else setSortDir('asc')
+    } else {
+      setSortKey(col)
+      setSortDir('asc')
+    }
+  }
 
   const filters: [FilterType, string][] = [
     ['all', `Todos (${rows.length})`],
     ['contados', `Contados (${rows.filter((r) => r.status === 'Contado').length})`],
     ['extranos', `Extraños (${rows.filter((r) => r.status === 'Extraño').length})`],
+  ]
+
+  const columns: { key: string; label: string }[] = [
+    { key: 'bl', label: 'BL' },
+    { key: 'origen', label: 'Origen' },
+    { key: 'fileName', label: 'Archivo' },
+    { key: 'status', label: 'Estado' },
   ]
 
   return (
@@ -87,10 +115,18 @@ export default function ConteoTable({ conteos, manifestBLs }: ConteoTableProps) 
         <table className="w-full text-sm">
           <thead className="sticky top-0 bg-gray-50">
             <tr>
-              <th className="px-3 py-2 text-xs font-semibold text-gray-600 text-left">BL</th>
-              <th className="px-3 py-2 text-xs font-semibold text-gray-600 text-left">Origen</th>
-              <th className="px-3 py-2 text-xs font-semibold text-gray-600 text-left">Archivo</th>
-              <th className="px-3 py-2 text-xs font-semibold text-gray-600 text-left">Estado</th>
+              {columns.map((col) => (
+                <th
+                  key={col.key}
+                  onClick={() => handleSort(col.key)}
+                  className="px-3 py-2 text-xs font-semibold text-gray-600 text-left whitespace-nowrap cursor-pointer select-none hover:text-brand-600 transition-colors"
+                >
+                  {col.label}
+                  {sortKey === col.key && sortDir && (
+                    <span className="ml-1 text-brand-600">{sortDir === 'asc' ? '▲' : '▼'}</span>
+                  )}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
