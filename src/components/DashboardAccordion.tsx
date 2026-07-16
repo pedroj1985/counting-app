@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { ManifestRow, ConteoData, Comparison } from '../types'
+import type { ManifestRow, ConteoData } from '../types'
 import { normalizeBL } from '../utils/normalizer'
 import { compareBLs } from '../utils/comparator'
 import KPICards from './KPICards'
