@@ -1,3 +1,5 @@
+import { normalizeBL } from './normalizer'
+
 export interface ScannedBL {
   bl: string
   count: number
@@ -32,7 +34,7 @@ export function processScan(
   manifestBLs: Set<string>,
   manifestBultos: Map<string, number>,
 ): { updated: Map<string, number>; alert: string | null } {
-  const norm = scannedBL.trim().toUpperCase()
+  const norm = normalizeBL(scannedBL) ?? scannedBL.trim().toUpperCase()
 
   if (!manifestBLs.has(norm)) {
     return { updated: current, alert: `⚠️ "${norm}" no está en el manifiesto` }

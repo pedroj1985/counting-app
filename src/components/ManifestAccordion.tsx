@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ManifestMeta, ManifestRow } from '../types'
 import { parseManifest } from '../utils/parser'
+import { normalizeBL } from '../utils/normalizer'
 import FileUploader from './FileUploader'
 import BLTable from './BLTable'
 
@@ -27,8 +28,8 @@ export default function ManifestAccordion({ onData, initialMeta, initialHeaders,
       setRows(result.rows)
       const bls = new Set(
         result.rows
-          .map((r) => r['Número de BL'] || '')
-          .filter(Boolean)
+          .map((r) => normalizeBL(r['Número de BL'] || ''))
+          .filter((b): b is string => b !== null)
       )
       onData(result.meta, result.headers, result.rows, bls)
     } catch (err) {

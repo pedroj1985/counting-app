@@ -89,7 +89,7 @@ export default function LiveScannerAccordion({ manifestRows, onExportConteo }: L
   }, [])
 
   const handleScan = useCallback((text: string) => {
-    const norm = text.trim().toUpperCase()
+    const norm = normalizeBL(text) ?? text.trim().toUpperCase()
 
     setScanned((prev) => {
       const { updated } = processScan(prev, norm, manifestBLs, manifestBultos)
